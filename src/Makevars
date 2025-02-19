@@ -1,0 +1,20 @@
+CODON_OBJECTS = codonlib.o
+CODON_LIB_PATH = $(CODON_HOME)/lib/codon
+CODON_FLAGS = --relocation-model=pic
+
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(CODON_OBJECTS) $(SOURCES:.cpp=.o)
+PKG_LIBS = -L$(CODON_LIB_PATH) -Wl,-rpath,$(CODON_LIB_PATH) -lcodonc -lcodonrt
+
+all: C_clean
+
+$(SHLIB): $(OBJECTS)
+
+$(CODON_OBJECTS):
+	codon build $(CODON_FLAGS) -o $(CODON_OBJECTS) codon/lib.codon
+
+C_clean:
+	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS)
+
+clean:
+	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS)
