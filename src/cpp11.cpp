@@ -6,16 +6,32 @@
 #include <R_ext/Visibility.h>
 
 // wrapper.cpp
-int myfun_impl(int n);
-extern "C" SEXP _codontest_myfun_impl(SEXP n) {
+doubles add_one_impl(std::string dat, integers dim);
+extern "C" SEXP _codontest_add_one_impl(SEXP dat, SEXP dim) {
   BEGIN_CPP11
-    return cpp11::as_sexp(myfun_impl(cpp11::as_cpp<cpp11::decay_t<int>>(n)));
+    return cpp11::as_sexp(add_one_impl(cpp11::as_cpp<cpp11::decay_t<std::string>>(dat), cpp11::as_cpp<cpp11::decay_t<integers>>(dim)));
+  END_CPP11
+}
+// wrapper.cpp
+list save_npy_impl(std::string file, std::string dat, integers dim);
+extern "C" SEXP _codontest_save_npy_impl(SEXP file, SEXP dat, SEXP dim) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(save_npy_impl(cpp11::as_cpp<cpp11::decay_t<std::string>>(file), cpp11::as_cpp<cpp11::decay_t<std::string>>(dat), cpp11::as_cpp<cpp11::decay_t<integers>>(dim)));
+  END_CPP11
+}
+// wrapper.cpp
+doubles read_npy_impl(std::string file);
+extern "C" SEXP _codontest_read_npy_impl(SEXP file) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(read_npy_impl(cpp11::as_cpp<cpp11::decay_t<std::string>>(file)));
   END_CPP11
 }
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
-    {"_codontest_myfun_impl", (DL_FUNC) &_codontest_myfun_impl, 1},
+    {"_codontest_add_one_impl",  (DL_FUNC) &_codontest_add_one_impl,  2},
+    {"_codontest_read_npy_impl", (DL_FUNC) &_codontest_read_npy_impl, 1},
+    {"_codontest_save_npy_impl", (DL_FUNC) &_codontest_save_npy_impl, 3},
     {NULL, NULL, 0}
 };
 }

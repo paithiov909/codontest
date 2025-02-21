@@ -15,8 +15,26 @@ knitr:
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-An R package that wrapping [Codon](https://docs.exaloop.io/codon) scripts.
+An experimental R package that compiles [Codon](https://docs.exaloop.io/codon) scripts at build time.
 
 ## Installation
 
-> TODO: Add installation instructions
+To build from source package, you need to install [Codon](https://docs.exaloop.io/codon) and
+set `CODON_DIR` environment variable. Codon will be installed at `~/.codon` by default, so typically it will be `"$HOME/.codon"`.
+
+## Example
+
+```{r}
+#| label: usage
+pkgload::load_all(export_all = FALSE)
+
+x <- add_one(matrix(1:9, nrow = 3, ncol = 3))
+
+npy_file <- tempfile(fileext = ".npy")
+y <- save_npy(x, npy_file)
+y
+
+read_npy(npy_file)
+
+RcppCNPy::npyLoad(npy_file)
+```

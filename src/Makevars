@@ -1,6 +1,6 @@
 CODON_OBJECTS = codonlib.o
-CODON_LIB_PATH = $(CODON_HOME)/lib/codon
-CODON_FLAGS = --relocation-model=pic
+CODON_LIB_PATH = $(CODON_DIR)/lib/codon
+CODON_FLAGS = --relocation-model=pic --release
 
 SOURCES = $(wildcard *.cpp)
 OBJECTS = $(CODON_OBJECTS) $(SOURCES:.cpp=.o)

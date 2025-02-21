@@ -1,0 +1,29 @@
+from C import Rprintf(cobj) -> None
+from C import REprintf(cobj) -> None
+# from C import Rf_error(cobj) -> None
+import numpy as np
+
+def print(obj) -> None:
+    """
+    Prints the string representation of the given object
+    using the Rprintf function from the R's C API.
+    """
+    Rprintf((f"{str(obj)}" + "\n").c_str())
+
+def warn(obj) -> None:
+    """
+    Prints the string representation of the given object
+    using the REprintf function from the R's C API.
+    """
+    REprintf((f"Error from codon: {str(obj)}" + "\n").c_str())
+
+@tuple
+class NdarrayInfo:
+    shape: tuple[int, int]
+    strides: tuple[int, int]
+    size: int
+
+@tuple
+class NdarrayStr:
+    info: NdarrayInfo
+    data: str

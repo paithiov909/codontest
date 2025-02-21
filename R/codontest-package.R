@@ -5,8 +5,3 @@
 #' @useDynLib codontest, .registration = TRUE
 ## usethis namespace: end
 NULL
-
-#' @export
-myfun <- function(n) {
-  myfun_impl(n)
-}

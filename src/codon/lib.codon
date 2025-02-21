@@ -1,3 +1,44 @@
+import numpy as np
+from utils import print, warn, NdarrayInfo, NdarrayStr
+
 @export
-def foo(n: int):
-    return n * n
+def foo(dat: str, x: int, y: int) -> NdarrayStr:
+    try:
+        # `dat` is null terminated since it comes from C.
+        arr = np.fromstring(dat.strip('\x00'), dtype=float, sep=',').reshape(x, y)
+        arr += 1.0
+    except ValueError as e:
+        warn(e)
+        arr = np.empty((0, 0), dtype=float)
+    except:
+        warn("ouch, we're in deep trouble")
+        arr = np.empty((0, 0), dtype=float)
+    finally:
+        print(arr)
+        ret = NdarrayStr(NdarrayInfo(arr.shape, arr.strides, arr.size), str(arr.tolist()))
+        print(ret)
+        return ret
+
+@export
+def bar(file: str, dat: str, x: int, y: int) -> NdarrayInfo:
+    try:
+        arr = np.fromstring(dat.strip('\x00'), dtype=float, sep=',').reshape(x, y)
+        np.save(file, arr)
+    except ValueError as e:
+        warn(e)
+        arr = np.empty((0, 0), dtype=float)
+    except:
+        warn("ouch, we're in deep trouble")
+        arr = np.empty((0, 0), dtype=float)
+    finally:
+        print(arr)
+        return NdarrayInfo(arr.shape, arr.strides, arr.size)
+
+@export
+def baz(file: str) -> NdarrayStr:
+    try:
+        arr = np.load(file, dtype=float, ndim=2)
+        print(arr)
+        return NdarrayStr(NdarrayInfo(arr.shape, arr.strides, arr.size), str(arr.tolist()))
+    except:
+        warn("ouch, we're in deep trouble")
