@@ -36,6 +36,7 @@ jobs:
           export ARCH=$(uname -m)
           curl -L https://github.com/exaloop/codon/releases/latest/download/"codon-$OS-$ARCH.tar.gz" | tar zxvf - --strip-components=1
           echo "CODON_DIR=$RUNNER_TEMP/.codon" >> $GITHUB_ENV
+          echo "$RUNNER_TEMP/.codon/bin" >> "$GITHUB_PATH"
 
       - uses: r-lib/actions/check-r-package@v2
         with:
